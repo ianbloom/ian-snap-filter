@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<style>
+table
+{
+border:1px solid green;
+}
+td
+{
+height:200px;
+width:50px;
+text-align:center;
+}
+.white
+{
+background-color:white;
+border: 1px solid black;
+}
+.black
+{
+background-color:black;
+border: 1px solid black;
+color: white
+}
+</style>
+
+<script>
+var context;
+window.addEventListener('load', init, false);
+function init() {
+  try {
+    // Fix up for prefixing
+    window.AudioContext = window.AudioContext||window.webkitAudioContext;
+    context = new AudioContext();
+	
+  }
+  catch(e) {
+    alert('Web Audio API is not supported in this browser');
+  }
+	alert('exiting init function');
+	var oscillator = null;
+	var gainNode = null;
+	var currTime = null;
+	
+	var attackValue = null;
+	var decayValue = null;
+	var sustainValue = null;
+	var releaseValue = null;
+	
+	var oscillatorValue = null;
+	
+	$("input[name = 'wave']").change(function(){
+		if(this.value == "sine") {
+			oscillatorValue = 0;
+			}
+		else if(this.value == "square") {
+			oscillatorValue = 1;
+			}
+		else if(this.value == "sawtooth") {
+			oscillatorValue = 2;
+			}
+		else if(this.value == "triangle") {
+			oscillatorValue = 3;
+			}
+	});
+	
+	
+	$("#attack").change(function(){
+	attackValue = this.value / 100; 
+	});
+	
+	$("#decay").change(function() {
+	decayValue = this.value / 100;
+	});
+	
+	$("#sustain").change(function() {
+	sustainValue = this.value / 100;
+	});
+	
+	$("#release").change(function() {
+	releaseValue = this.value / 100;
+	});
+	
+    $("#A").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440;
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#A").mouseup(function(){
+	$(this).css('background-color', 'white');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+
+  $("#A+").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 1/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#A+").mouseup(function(){
+	$(this).css('background-color', 'black');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+
+    $("#B").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 2/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#B").mouseup(function(){
+	$(this).css('background-color', 'white');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+
+    $("#C").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 3/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#C").mouseup(function(){
+	$(this).css('background-color', 'white');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+
+     $("#C+").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 4/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#C+").mouseup(function(){
+	$(this).css('background-color', 'black');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+
+    $("#D").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 5/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#D").mouseup(function(){
+	$(this).css('background-color', 'white');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+  
+   $("#D+").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 6/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#D+").mouseup(function(){
+	$(this).css('background-color', 'black');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+  
+    $("#E").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 7/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#E").mouseup(function(){
+	$(this).css('background-color', 'white');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+  
+    $("#F").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 8/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#F").mouseup(function(){
+	$(this).css('background-color', 'white');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+  
+    $("#F+").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 9/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#F+").mouseup(function(){
+	$(this).css('background-color', 'black');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+  
+    $("#G").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 10/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#G").mouseup(function(){
+	$(this).css('background-color', 'white');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+  
+    $("#G+").mousedown(function(){
+	oscillator = context.createOscillator();
+	oscillator.type = oscillatorValue;
+    oscillator.frequency.value = 440 * Math.pow(2, 11/12);
+	gainNode = context.createGain();
+	oscillator.connect(gainNode);
+	gainNode.connect(context.destination);
+	oscillator.start(0);
+	//currTime = context.currentTime();
+	//gainNode.gain.linearRampToValueAtTime(0, 0);
+    //gainNode.gain.linearRampToValueAtTime(1, .25);
+	currTime = context.currentTime;
+	gainNode.gain.linearRampToValueAtTime(0, currTime);
+    gainNode.gain.linearRampToValueAtTime(1, currTime + attackValue);
+	gainNode.gain.linearRampToValueAtTime(sustainValue, currTime + attackValue + decayValue);
+	$(this).css('background-color', 'red');
+  });
+  
+	$("#G+").mouseup(function(){
+	$(this).css('background-color', 'black');
+	currTime = context.currentTime;
+	volume = gainNode.gain.value;
+	gainNode.gain.linearRampToValueAtTime(volume, currTime);
+    gainNode.gain.linearRampToValueAtTime(0, currTime + releaseValue);
+	oscillator.stop(currTime + releaseValue);
+  });
+}
+
+</script>
+</head>
+
+<body>
+<p>Attack (seconds): 0<input id="attack" type="range" min="0" max="100" value="0"/>1</p>
+<p>Decay (seconds): 0<input id="decay" type="range" min="0" max="100" value="0"/>1</p>
+<p>Sustain (percent): 0<input id="sustain" type="range" min="0" max="100" value="0"/>100</p>
+<p>Release (seconds): 0<input id="release" type="range" min="0" max="100" value="0"/>1</p>
+<table>
+	<tr>
+		<td id = "A" class="white">A</td>
+		<td id = "A+" class="black">A+</td>
+		<td id = "B" class="white">B</td>
+		<td id = "C" class="white">C</td>
+		<td id = "C+" class="black">C+</td>
+		<td id = "D" class="white">D</td>
+		<td id = "D+"class="black">D+</td>
+		<td id = "E"class="white">E</td>
+		<td id = "F" class="white">F</td>
+		<td id = "F+" class="black">F+</td>
+		<td id = "G" class="white">G</td>
+		<td id = "G+" class="black">G+</td>
+	</tr>
+</table>
+
+<form>
+<input type="radio" name="wave" value="sine">Sine
+<input type="radio" name="wave" value="square">Square
+<input type="radio" name="wave" value="sawtooth">Sawtooth
+<input type="radio" name="wave" value="triangle">Triangle
+
+</form>
+
+<h1 id="A">A</h1>
+<h1 id="A+">A+</h1>
+<h1 id="B">B</h1>
+<h1 id="C">C</h1>
+<h1 id="C+">C+</h1>
+<h1 id="D">D</h1>
+<h1 id="D+">D+</h1>
+<h1 id="E">E</h1>
+<h1 id="F">F</h1>
+<h1 id="F+">F+</h1>
+<h1 id="G">G</h1>
+<h1 id="G+">G+</h1>
+</body>
+</html>
