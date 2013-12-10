@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>
+
+<!-- this code copied from http://greweb.me/2013/08/FM-audio-api/
+
+TODO: the constants 250.0 and 700 might ought to be some kind of slider input instead of
+  constants.   And, maybe this ought to be hooked up to a keyboard.  Just sayin.  -->
+
+
+// by @greweb
+// Experimenting with Frequency Modulation + Filter Cutoff
+
+function doIt() {
+
+window.alert("Doing it!")
+
+var context = new webkitAudioContext();
+
+function Modulator (type, freq, gain) {
+  this.modulator = context.createOscillator();
+  this.gain = context.createGainNode();
+  this.modulator.type = type;
+  this.modulator.frequency.value = freq;
+  this.gain.gain.value = gain;
+  this.modulator.connect(this.gain);
+  this.modulator.start(0);
+}
+
+// Make a stack of modulator
+var modulatorStackNode = [
+    new Modulator("sine", 250.0, 700)
+].reduce(function (input, output) {
+   input.gain.connect(output.modulator.frequency);
+    return output;
+});
+
+// Make an oscillator, connect the modulator stack, play it!
+var osc = context.createOscillator();
+osc.type = "sine";
+osc.frequency.value = 100+400*Math.random();
+modulatorStackNode.gain.connect(osc.frequency);
+
+var filter = context.createBiquadFilter();
+filter.frequency.value = 2000;
+filter.Q.value = 10;
+osc.connect(filter);
+filter.connect(context.destination);
+
+osc.start(0);
+
+
+}
+
+$( document ).ready(function() {
+  window.alert("about to call doIt");
+  doIt();
+});
+
+</script>
+</head>
+<body>
+<h1>FM! sucka!</h1>
+</body>
+</html>
